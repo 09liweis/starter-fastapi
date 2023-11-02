@@ -4,6 +4,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 from pymongo import MongoClient
+from datetime import datetime
 
 import os
 
@@ -29,6 +30,7 @@ async def root():
           "$exists": True
       }})
   return {
+      "date": datetime.now(),
       "name": "todo",
       "total": count,
       "pending": pending_count,
