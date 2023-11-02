@@ -24,11 +24,16 @@ async def root():
   count = todos_collection.count_documents({})
   pending_count = todos_collection.count_documents({"status": "pending"})
   done_count = todos_collection.count_documents({"status": "done"})
+  has_steps_count = todos_collection.count_documents(
+      {"steps.0": {
+          "$exists": True
+      }})
   return {
       "name": "todo",
       "total": count,
       "pending": pending_count,
-      "done": done_count
+      "done": done_count,
+      "has_steps_count": has_steps_count
   }
 
 
