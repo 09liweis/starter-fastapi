@@ -30,7 +30,7 @@ async def root():
           "$exists": True
       }})
   return {
-      "date": datetime.now(),
+      "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
       "name": "todo",
       "total": count,
       "pending": pending_count,
