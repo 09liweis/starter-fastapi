@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
 
 from pydantic import BaseModel
 
@@ -37,11 +36,6 @@ async def root():
       "done": done_count,
       "has_steps_count": has_steps_count
   }
-
-
-@app.get('/favicon.ico', include_in_schema=False)
-async def favicon():
-  return FileResponse('favicon.ico')
 
 
 @app.get("/item/{item_id}")
