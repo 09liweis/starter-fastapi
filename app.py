@@ -21,6 +21,9 @@ class Item(BaseModel):
 
 @app.get("/")
 async def root():
+  todos = todos_collection.find()
+  for todo in todos:
+    print(todo['status'])
   count = todos_collection.count_documents({})
   pending_count = todos_collection.count_documents({"status": "pending"})
   done_count = todos_collection.count_documents({"status": "done"})
