@@ -22,19 +22,30 @@ class Item(BaseModel):
 @app.get("/")
 async def root():
   todos = todos_collection.find()
+  total_count = 0
+  pending_count = 0
+  done_count = 0
+  has_steps_count = 0
   for todo in todos:
-    print(todo['status'])
-  count = todos_collection.count_documents({})
-  pending_count = todos_collection.count_documents({"status": "pending"})
-  done_count = todos_collection.count_documents({"status": "done"})
-  has_steps_count = todos_collection.count_documents(
-      {"steps.0": {
-          "$exists": True
-      }})
+    total_count += 1
+    todo_status = todo['status']
+    if todo_status == 'pending':
+      pending_count += 1
+    if todo_status == 'done':
+      done_count += 1
+    if len(todo['steps']) > 0:
+      has_steps_count += 1
+  # count = todos_collection.count_documents({})
+  # pending_count = todos_collection.count_documents({"status": "pending"})
+  # done_count = todos_collection.count_documents({"status": "done"})
+  # has_steps_count = todos_collection.count_documents(
+  #     {"steps.0": {
+  #         "$exists": True
+  #     }})
   return {
       "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
       "name": "todo",
-      "total": count,
+      "total": total_count,
       "pending": pending_count,
       "done": done_count,
       "has_steps_count": has_steps_count
