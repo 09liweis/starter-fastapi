@@ -50,8 +50,10 @@ async def root():
   #     {"steps.0": {
   #         "$exists": True
   #     }})
+  response_time = perf_counter() - time_before
+  print(f"Total Time in response: {response_time}")
   return {
-      "process_time": perf_counter() - time_before,
+      "process_time": response_time,
       "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
       "name": "todo",
       "total": total_count,
