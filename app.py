@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 from pymongo import MongoClient
 from datetime import datetime
+from time import perf_counter
 
 import os
 
@@ -38,6 +39,7 @@ def getTodoCounts(todos):
 
 @app.get("/")
 async def root():
+  time_before = perf_counter()
   todos = todos_collection.find()
   [total_count, pending_count, done_count,
    has_steps_count] = getTodoCounts(todos)
@@ -49,6 +51,7 @@ async def root():
   #         "$exists": True
   #     }})
   return {
+      "process_time": perf_counter() - time_before,
       "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
       "name": "todo",
       "total": total_count,
