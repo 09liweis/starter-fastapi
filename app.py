@@ -16,8 +16,9 @@ todos_collection = client.heroku_6njptcbp.todos
 app = FastAPI()
 
 
-class Item(BaseModel):
-  item_id: int
+class Todo(BaseModel):
+  todo_id: str
+  status: str
 
 
 def getTodoCounts(todos):
@@ -73,6 +74,6 @@ async def list_items():
   return [{"item_id": 1, "name": "Foo"}, {"item_id": 2, "name": "Bar"}]
 
 
-@app.post("/items/")
-async def create_item(item: Item):
-  return item
+@app.post("/todos/")
+async def create_todo(todo: Todo):
+  return todo
