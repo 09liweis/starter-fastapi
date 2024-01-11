@@ -12,6 +12,7 @@ mongodb_url = os.environ['MONGODB_URL']
 
 client = MongoClient(mongodb_url)
 todos_collection = client.heroku_6njptcbp.todos
+movies_collection = client.heroku_6njptcbp.visuals
 
 app = FastAPI()
 
@@ -62,6 +63,15 @@ async def root():
       "done": done_count,
       "has_steps_count": has_steps_count
   }
+
+
+@app.get("/movies")
+async def movies_count():
+  movies = movies_collection.find()
+  total = 0
+  for movie in movies:
+    total += 1
+  return {"total": total}
 
 
 @app.get("/item/{item_id}")
