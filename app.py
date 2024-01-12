@@ -69,9 +69,32 @@ async def root():
 async def movies_count():
   movies = movies_collection.find()
   total = 0
+  movie_count = 0
+  tv_count = 0
+  done_count = 0
+  not_started_count = 0
   for movie in movies:
+    if movie['visual_type'] == 'movie':
+      movie_count += 1
+    else:
+      tv_count += 1
+
+    if 'current_episode' in movie:
+      if movie['current_episode'] == movie['episodes']:
+        done_count += 1
+      if movie['current_episode'] == 0:
+        not_started_count += 1
+    else:
+      not_started_count += 1
+    
     total += 1
-  return {"total": total}
+  return {
+      "total": total,
+      "movie": movie_count,
+      "tv": tv_count,
+      "done": done_count,
+      "not_started": not_started_count
+  }
 
 
 @app.get("/item/{item_id}")
