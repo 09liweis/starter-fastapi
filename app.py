@@ -74,7 +74,16 @@ async def movies_count():
   done_count = 0
   not_started_count = 0
   has_imdb_count = 0
+  genres_count = {}
   for movie in movies:
+    if 'genres' in movie:
+      genres = movie['genres']
+      for g in genres:
+        if g in genres_count:
+          genres_count[g] += 1
+        else:
+          genres_count[g] = 1
+
     if movie['visual_type'] == 'movie':
       movie_count += 1
     else:
@@ -98,7 +107,8 @@ async def movies_count():
       "tv": tv_count,
       "done": done_count,
       "not_started": not_started_count,
-      "has_imdb": has_imdb_count
+      "has_imdb": has_imdb_count,
+      "genres": genres_count
   }
 
 
