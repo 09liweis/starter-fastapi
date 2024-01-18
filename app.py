@@ -1,12 +1,10 @@
-from fastapi import FastAPI
-
-from pydantic import BaseModel
-
-from pymongo import MongoClient
+import os
 from datetime import datetime
 from time import perf_counter
 
-import os
+from fastapi import FastAPI
+from pydantic import BaseModel
+from pymongo import MongoClient
 
 mongodb_url = os.environ['MONGODB_URL']
 
