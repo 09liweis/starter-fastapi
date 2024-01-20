@@ -37,35 +37,7 @@ def getTodoCounts(todos):
   return [total_count, pending_count, done_count, has_steps_count]
 
 
-@app.get("/")
-async def root():
-  time_before = perf_counter()
-  todos = todos_collection.find()
-  [total_count, pending_count, done_count,
-   has_steps_count] = getTodoCounts(todos)
-  # count = todos_collection.count_documents({})
-  # pending_count = todos_collection.count_documents({"status": "pending"})
-  # done_count = todos_collection.count_documents({"status": "done"})
-  # has_steps_count = todos_collection.count_documents(
-  #     {"steps.0": {
-  #         "$exists": True
-  #     }})
-  response_time = perf_counter() - time_before
-  print(f"Total Time in response: {response_time}")
-  return {
-      "process_time": response_time,
-      "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-      "name": "todo",
-      "total": total_count,
-      "pending": pending_count,
-      "done": done_count,
-      "has_steps_count": has_steps_count
-  }
-
-
-@app.get("/movies")
-async def movies_count():
-  movies = movies_collection.find()
+def getMoviesCounts(movies):
   total = 0
   movie_count = 0
   tv_count = 0
@@ -117,6 +89,45 @@ async def movies_count():
       has_imdb_count += 1
 
     total += 1
+  return [
+      total, movie_count, tv_count, done_count, not_started_count,
+      has_imdb_count, genres_count, countries_count, languages_count
+  ]
+
+
+@app.get("/")
+async def root():
+  time_before = perf_counter()
+  todos = todos_collection.find()
+  [total_count, pending_count, done_count,
+   has_steps_count] = getTodoCounts(todos)
+  # count = todos_collection.count_documents({})
+  # pending_count = todos_collection.count_documents({"status": "pending"})
+  # done_count = todos_collection.count_documents({"status": "done"})
+  # has_steps_count = todos_collection.count_documents(
+  #     {"steps.0": {
+  #         "$exists": True
+  #     }})
+  response_time = perf_counter() - time_before
+  print(f"Total Time in response: {response_time}")
+  return {
+      "process_time": response_time,
+      "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+      "name": "todo",
+      "total": total_count,
+      "pending": pending_count,
+      "done": done_count,
+      "has_steps_count": has_steps_count
+  }
+
+
+@app.get("/movies")
+async def movies_count():
+  movies = list(movies_collection.find())
+  [
+      total, movie_count, tv_count, done_count, not_started_count,
+      has_imdb_count, genres_count, countries_count, languages_count
+  ] = getMoviesCounts(movies)
   return {
       "total": total,
       "movie": movie_count,
