@@ -6,6 +6,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from pymongo import MongoClient
 
+from classes.movie_stats import MovieStats
+
 mongodb_url = os.environ['MONGODB_URL']
 
 client = MongoClient(mongodb_url)
@@ -37,71 +39,6 @@ def getTodoCounts(todos):
   return [total_count, pending_count, done_count, has_steps_count]
 
 
-def getMoviesCounts(movies):
-  total = 0
-  movie_count = 0
-  tv_count = 0
-  done_count = 0
-  not_started_count = 0
-  has_imdb_count = 0
-  genres_count = {}
-  countries_count = {}
-  languages_count = {}
-  for movie in movies:
-    if 'genres' in movie:
-      genres = movie['genres']
-      for g in genres:
-        if g in genres_count:
-          genres_count[g] += 1
-        else:
-          genres_count[g] = 1
-
-    if 'countries' in movie:
-      countries = movie['countries']
-      for c in countries:
-        if c in countries_count:
-          countries_count[c] += 1
-        else:
-          countries_count[c] = 1
-
-    if 'languages' in movie:
-      languages = movie['languages']
-      for l in languages:
-        if l in languages_count:
-          languages_count[l] += 1
-        else:
-          languages_count[l] = 1
-
-    if movie['visual_type'] == 'movie':
-      movie_count += 1
-    else:
-      tv_count += 1
-
-    if 'current_episode' in movie:
-      if movie['current_episode'] == movie['episodes']:
-        done_count += 1
-      if movie['current_episode'] == 0:
-        not_started_count += 1
-    else:
-      not_started_count += 1
-
-    if 'imdb_id' in movie and movie['imdb_id'] != '':
-      has_imdb_count += 1
-
-    total += 1
-  return {
-      "total": total,
-      "movie": movie_count,
-      "tv": tv_count,
-      "done": done_count,
-      "not_started": not_started_count,
-      "has_imdb": has_imdb_count,
-      "genres": genres_count,
-      "countries": countries_count,
-      "languages": languages_count
-  }
-
-
 @app.get("/")
 async def root():
   time_before = perf_counter()
@@ -131,7 +68,8 @@ async def root():
 @app.get("/movies")
 async def movies_count():
   movies = list(movies_collection.find())
-  result = getMoviesCounts(movies)
+  movie_stats = MovieStats(movies)
+  result = movie_stats.get_stats()
   return result
 
 
