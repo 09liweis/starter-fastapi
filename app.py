@@ -89,10 +89,17 @@ def getMoviesCounts(movies):
       has_imdb_count += 1
 
     total += 1
-  return [
-      total, movie_count, tv_count, done_count, not_started_count,
-      has_imdb_count, genres_count, countries_count, languages_count
-  ]
+  return {
+      "total": total,
+      "movie": movie_count,
+      "tv": tv_count,
+      "done": done_count,
+      "not_started": not_started_count,
+      "has_imdb": has_imdb_count,
+      "genres": genres_count,
+      "countries": countries_count,
+      "languages": languages_count
+  }
 
 
 @app.get("/")
@@ -124,21 +131,8 @@ async def root():
 @app.get("/movies")
 async def movies_count():
   movies = list(movies_collection.find())
-  [
-      total, movie_count, tv_count, done_count, not_started_count,
-      has_imdb_count, genres_count, countries_count, languages_count
-  ] = getMoviesCounts(movies)
-  return {
-      "total": total,
-      "movie": movie_count,
-      "tv": tv_count,
-      "done": done_count,
-      "not_started": not_started_count,
-      "has_imdb": has_imdb_count,
-      "genres": genres_count,
-      "countries": countries_count,
-      "languages": languages_count
-  }
+  result = getMoviesCounts(movies)
+  return result
 
 
 @app.get("/item/{item_id}")
