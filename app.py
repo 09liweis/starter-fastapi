@@ -36,26 +36,7 @@ def getTodoCounts(todos):
       done_count += 1
     if len(todo['steps']) > 0:
       has_steps_count += 1
-  return [total_count, pending_count, done_count, has_steps_count]
-
-
-@app.get("/")
-async def root():
-  time_before = perf_counter()
-  todos = todos_collection.find()
-  [total_count, pending_count, done_count,
-   has_steps_count] = getTodoCounts(todos)
-  # count = todos_collection.count_documents({})
-  # pending_count = todos_collection.count_documents({"status": "pending"})
-  # done_count = todos_collection.count_documents({"status": "done"})
-  # has_steps_count = todos_collection.count_documents(
-  #     {"steps.0": {
-  #         "$exists": True
-  #     }})
-  response_time = perf_counter() - time_before
-  print(f"Total Time in response: {response_time}")
   return {
-      "process_time": response_time,
       "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
       "name": "todo",
       "total": total_count,
@@ -63,6 +44,24 @@ async def root():
       "done": done_count,
       "has_steps_count": has_steps_count
   }
+
+
+@app.get("/")
+async def root():
+  time_before = perf_counter()
+  todos = todos_collection.find()
+  result = getTodoCounts(todos)
+  response_time = perf_counter() - time_before
+  print(f"Total Time in response: {response_time}")
+  result['response_time'] = response_time
+  return result
+  # count = todos_collection.count_documents({})
+  # pending_count = todos_collection.count_documents({"status": "pending"})
+  # done_count = todos_collection.count_documents({"status": "done"})
+  # has_steps_count = todos_collection.count_documents(
+  #     {"steps.0": {
+  #         "$exists": True
+  #     }})
 
 
 @app.get("/movies")
