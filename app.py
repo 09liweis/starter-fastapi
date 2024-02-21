@@ -11,8 +11,6 @@ from movie_stats import MovieStats
 mongodb_url = os.environ['MONGODB_URL']
 
 client = MongoClient(mongodb_url)
-todos_collection = client.heroku_6njptcbp.todos
-movies_collection = client.heroku_6njptcbp.visuals
 
 app = FastAPI()
 
@@ -49,6 +47,7 @@ def getTodoCounts(todos):
 @app.get("/")
 async def root():
   time_before = perf_counter()
+  todos_collection = client.heroku_6njptcbp.todos
   todos = todos_collection.find()
   result = getTodoCounts(todos)
   response_time = perf_counter() - time_before
@@ -66,6 +65,7 @@ async def root():
 
 @app.get("/movies")
 async def movies_count():
+  movies_collection = client.heroku_6njptcbp.visuals
   movies = list(movies_collection.find())
   movie_stats = MovieStats(movies)
   result = movie_stats.get_stats()
