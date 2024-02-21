@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from pymongo import MongoClient
 
-from .classes.movie_stats import MovieStats
+from movie_stats import MovieStats
 
 mongodb_url = os.environ['MONGODB_URL']
 
