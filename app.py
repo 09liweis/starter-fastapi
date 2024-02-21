@@ -11,6 +11,7 @@ from movie_stats import MovieStats
 mongodb_url = os.environ['MONGODB_URL']
 
 client = MongoClient(mongodb_url)
+database = client.heroku_6njptcbp
 
 app = FastAPI()
 
@@ -47,7 +48,7 @@ def getTodoCounts(todos):
 @app.get("/")
 async def root():
   time_before = perf_counter()
-  todos_collection = client.heroku_6njptcbp.todos
+  todos_collection = database.todos
   todos = todos_collection.find()
   result = getTodoCounts(todos)
   response_time = perf_counter() - time_before
@@ -65,10 +66,26 @@ async def root():
 
 @app.get("/movies")
 async def movies_count():
-  movies_collection = client.heroku_6njptcbp.visuals
+  movies_collection = database.visuals
   movies = list(movies_collection.find())
   movie_stats = MovieStats(movies)
   result = movie_stats.get_stats()
+  return result
+
+
+@app.get("/expenses")
+async def expenses_count():
+  expenses_collection = database.transactions
+  expenses = list(expenses_collection.find())
+  result = {}
+  for expense in expenses:
+    date = expense["date"]
+    price = expense["price"]
+    yearMonthDate = date[:7]
+    if yearMonthDate not in result:
+      result[yearMonthDate] = price
+    else:
+      result[yearMonthDate] += price
   return result
 
 
