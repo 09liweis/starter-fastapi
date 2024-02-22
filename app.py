@@ -85,6 +85,16 @@ async def expenses_count():
     yearMonthDate = date[:7]
     yearDate = date[:4]
 
+    if yearDate not in result:
+      result[yearDate] = {"total": price}
+    else:
+      result[yearDate]["total"] += price
+
+    if category in result[yearDate]:
+      result[yearDate][category] += price
+    else:
+      result[yearDate][category] = price
+
     if yearMonthDate not in result:
       result[yearMonthDate] = {"total": price}
     else:
