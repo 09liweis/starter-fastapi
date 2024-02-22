@@ -81,11 +81,19 @@ async def expenses_count():
   for expense in expenses:
     date = expense["date"]
     price = expense["price"]
+    category = expense["category"]
     yearMonthDate = date[:7]
+    yearDate = date[:4]
+
     if yearMonthDate not in result:
-      result[yearMonthDate] = price
+      result[yearMonthDate] = {"total": price}
     else:
-      result[yearMonthDate] += price
+      result[yearMonthDate]["total"] += price
+
+    if category in result[yearMonthDate]:
+      result[yearMonthDate][category] += price
+    else:
+      result[yearMonthDate][category] = price
   return result
 
 
