@@ -69,8 +69,8 @@ async def movies_count():
   movies_collection = database.visuals
   movies = list(movies_collection.find())
   movie_stats = MovieStats(movies)
-  result = movie_stats.get_stats()
-  return result
+  movie_result = movie_stats.get_stats()
+  return movie_result
 
 
 @app.get("/expenses")
