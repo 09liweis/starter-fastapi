@@ -107,6 +107,17 @@ async def expenses_count():
   return result
 
 
+@app.get("/places")
+async def places_count():
+  places_collection = database.places
+  places = list(places_collection.find())
+  result = {}
+  count = 0
+  for place in places:
+    count += 1
+  return {"count": count}
+
+
 @app.get("/item/{item_id}")
 async def read_item(item_id: int):
   return {"item_id": item_id}
