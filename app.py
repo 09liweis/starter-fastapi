@@ -110,12 +110,16 @@ async def expenses_count():
 @app.get("/places")
 async def places_count():
   places_collection = database.places
+  expenses_collecion = database.transactions
   places = list(places_collection.find())
   result = {}
   count = 0
   for place in places:
+    expenses_count = expenses_collecion.count_documents({'place':place['_id']})
+    if place["name"]:
+      result[place["name"]] = expenses_count
     count += 1
-  return {"count": count}
+  return result
 
 
 @app.get("/item/{item_id}")
