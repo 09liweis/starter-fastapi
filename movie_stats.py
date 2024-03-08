@@ -47,13 +47,16 @@ class MovieStats:
 
       total += 1
     return {
-        "total": total,
-        "movie": movie_count,
-        "tv": tv_count,
-        "done": done_count,
-        "not_started": not_started_count,
-        "has_imdb": has_imdb_count,
-        "genres": genres_count,
-        "countries": countries_count,
-        "languages": languages_count
+        "name": "movie",
+        "details": {
+            "total": total,
+            "movie": movie_count,
+            "tv": tv_count,
+            "done": done_count,
+            "not_started": not_started_count,
+            "has_imdb": has_imdb_count,
+            "genres": genres_count,
+            "countries": countries_count,
+            "languages": languages_count
+        }
     }

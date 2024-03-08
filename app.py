@@ -77,6 +77,7 @@ async def movies_count():
   movies = list(movies_collection.find())
   movie_stats = MovieStats(movies)
   movie_result = movie_stats.get_stats()
+  stat_collection.replace_one({"name": "movie"}, movie_result, upsert=True)
   return movie_result
 
 
