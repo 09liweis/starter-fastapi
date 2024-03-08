@@ -5,6 +5,7 @@ from time import perf_counter
 from fastapi import FastAPI
 from pydantic import BaseModel
 from pymongo import MongoClient
+from pymongo import ReturnDocument
 
 from movie_stats import MovieStats
 
@@ -12,6 +13,7 @@ mongodb_url = os.environ['MONGODB_URL']
 
 client = MongoClient(mongodb_url)
 database = client.heroku_6njptcbp
+stat_collection = database.stats
 
 app = FastAPI()
 
@@ -36,12 +38,13 @@ def getTodoCounts(todos):
     if len(todo['steps']) > 0:
       has_steps_count += 1
   return {
-      "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
       "name": "todo",
-      "total": total_count,
-      "pending": pending_count,
-      "done": done_count,
-      "has_steps_count": has_steps_count
+      "details": {
+          "total": total_count,
+          "pending": pending_count,
+          "done": done_count,
+          "has_steps_count": has_steps_count
+      }
   }
 
 
@@ -53,7 +56,11 @@ async def root():
   result = getTodoCounts(todos)
   response_time = perf_counter() - time_before
   print(f"Total Time in response: {response_time}")
+  stat_collection.replace_one({"name": "todo"},
+                                           result,
+                                           upsert=True)
   result['response_time'] = response_time
+  result["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
   return result
   # count = todos_collection.count_documents({})
   # pending_count = todos_collection.count_documents({"status": "pending"})
@@ -115,7 +122,8 @@ async def places_count():
   result = {}
   count = 0
   for place in places:
-    expenses_count = expenses_collecion.count_documents({'place':place['_id']})
+    expenses_count = expenses_collecion.count_documents(
+        {'place': place['_id']})
     if place["name"]:
       result[place["name"]] = expenses_count
     count += 1
