@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Fast API"
-version = "5.12.1"
+version = "5.13.1"
 description = ""
 authors = ["Your Name <you@example.com>"]
 

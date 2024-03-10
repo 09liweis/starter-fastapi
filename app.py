@@ -56,9 +56,7 @@ async def root():
   result = getTodoCounts(todos)
   response_time = perf_counter() - time_before
   print(f"Total Time in response: {response_time}")
-  stat_collection.replace_one({"name": "todo"},
-                                           result,
-                                           upsert=True)
+  stat_collection.replace_one({"name": "todo"}, result, upsert=True)
   result['response_time'] = response_time
   result["date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
   return result
@@ -85,7 +83,7 @@ async def movies_count():
 async def expenses_count():
   expenses_collection = database.transactions
   expenses = list(expenses_collection.find())
-  result = {}
+  result_details = {}
   for expense in expenses:
     date = expense["date"]
     price = expense["price"]
@@ -93,25 +91,27 @@ async def expenses_count():
     yearMonthDate = date[:7]
     yearDate = date[:4]
 
-    if yearDate not in result:
-      result[yearDate] = {"total": price}
+    if yearDate not in result_details:
+      result_details[yearDate] = {"total": price}
     else:
-      result[yearDate]["total"] += price
+      result_details[yearDate]["total"] += price
 
-    if category in result[yearDate]:
-      result[yearDate][category] += price
+    if category in result_details[yearDate]:
+      result_details[yearDate][category] += price
     else:
-      result[yearDate][category] = price
+      result_details[yearDate][category] = price
 
-    if yearMonthDate not in result:
-      result[yearMonthDate] = {"total": price}
+    if yearMonthDate not in result_details:
+      result_details[yearMonthDate] = {"total": price}
     else:
-      result[yearMonthDate]["total"] += price
+      result_details[yearMonthDate]["total"] += price
 
-    if category in result[yearMonthDate]:
-      result[yearMonthDate][category] += price
+    if category in result_details[yearMonthDate]:
+      result_details[yearMonthDate][category] += price
     else:
-      result[yearMonthDate][category] = price
+      result_details[yearMonthDate][category] = price
+  result = {"name": "expense", "details": result_details}
+  stat_collection.replace_one({"name": "expense"}, result, upsert=True)
   return result
 
 
