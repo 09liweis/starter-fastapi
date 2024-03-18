@@ -1,5 +1,5 @@
-import os
 from datetime import datetime
+import os
 from time import perf_counter
 
 from fastapi import FastAPI
