@@ -22,12 +22,20 @@ class MovieStats:
     genres_count = {}
     countries_count = {}
     languages_count = {}
+    years_count = {}
     for movie in self.movies:
       self.count_movie_field(movie, "genres", genres_count)
 
       self.count_movie_field(movie, "countries", countries_count)
 
       self.count_movie_field(movie, "languages", languages_count)
+
+      if "year" in movie:
+        year = movie['year']
+        if year in years_count:
+          years_count[year] += 1
+        else:
+          years_count[year] = 1
 
       if movie['visual_type'] == 'movie':
         movie_count += 1
@@ -57,6 +65,7 @@ class MovieStats:
             "has_imdb": has_imdb_count,
             "genres": genres_count,
             "countries": countries_count,
-            "languages": languages_count
+            "languages": languages_count,
+            "years": years_count
         }
     }
