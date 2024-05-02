@@ -1,0 +1,35 @@
+class ExpenseList:
+
+  def __init__(self, expenses):
+    self.expenses = expenses
+
+  def getExpenseCounts(self):
+    expenses = self.expenses
+    result_details = {}
+    for expense in expenses:
+      date = expense["date"]
+      price = expense["price"]
+      category = expense["category"]
+      yearMonthDate = date[:7]
+      yearDate = date[:4]
+
+      if yearDate not in result_details:
+        result_details[yearDate] = {"total": price}
+      else:
+        result_details[yearDate]["total"] += price
+
+      if category in result_details[yearDate]:
+        result_details[yearDate][category] += price
+      else:
+        result_details[yearDate][category] = price
+
+      if yearMonthDate not in result_details:
+        result_details[yearMonthDate] = {"total": price}
+      else:
+        result_details[yearMonthDate]["total"] += price
+
+      if category in result_details[yearMonthDate]:
+        result_details[yearMonthDate][category] += price
+      else:
+        result_details[yearMonthDate][category] = price
+    return {"name": "expense", "details": result_details}

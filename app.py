@@ -9,6 +9,7 @@ from pymongo import ReturnDocument
 
 from movie_stats import MovieStats
 from models.TodoList import TodoList
+from models.ExpenseList import ExpenseList
 
 mongodb_url = os.environ['MONGODB_URL']
 
@@ -60,34 +61,8 @@ async def movies_count():
 async def expenses_count():
   expenses_collection = database.transactions
   expenses = list(expenses_collection.find())
-  result_details = {}
-  for expense in expenses:
-    date = expense["date"]
-    price = expense["price"]
-    category = expense["category"]
-    yearMonthDate = date[:7]
-    yearDate = date[:4]
-
-    if yearDate not in result_details:
-      result_details[yearDate] = {"total": price}
-    else:
-      result_details[yearDate]["total"] += price
-
-    if category in result_details[yearDate]:
-      result_details[yearDate][category] += price
-    else:
-      result_details[yearDate][category] = price
-
-    if yearMonthDate not in result_details:
-      result_details[yearMonthDate] = {"total": price}
-    else:
-      result_details[yearMonthDate]["total"] += price
-
-    if category in result_details[yearMonthDate]:
-      result_details[yearMonthDate][category] += price
-    else:
-      result_details[yearMonthDate][category] = price
-  result = {"name": "expense", "details": result_details}
+  expenseList = ExpenseList(expenses)
+  result = expenseList.getExpenseCounts()
   stat_collection.replace_one({"name": "expense"}, result, upsert=True)
   return result
 
