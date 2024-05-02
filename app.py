@@ -8,6 +8,7 @@ from pymongo import MongoClient
 from pymongo import ReturnDocument
 
 from movie_stats import MovieStats
+from models.TodoList import TodoList
 
 mongodb_url = os.environ['MONGODB_URL']
 
@@ -23,37 +24,13 @@ class Todo(BaseModel):
   status: str
 
 
-def getTodoCounts(todos):
-  total_count = 0
-  pending_count = 0
-  done_count = 0
-  has_steps_count = 0
-  for todo in todos:
-    total_count += 1
-    todo_status = todo['status']
-    if todo_status == 'pending':
-      pending_count += 1
-    if todo_status == 'done':
-      done_count += 1
-    if len(todo['steps']) > 0:
-      has_steps_count += 1
-  return {
-      "name": "todo",
-      "details": {
-          "total": total_count,
-          "pending": pending_count,
-          "done": done_count,
-          "has_steps_count": has_steps_count
-      }
-  }
-
-
 @app.get("/")
 async def root():
   time_before = perf_counter()
   todos_collection = database.todos
   todos = todos_collection.find()
-  result = getTodoCounts(todos)
+  todoList = TodoList(todos)
+  result = todoList.getTodoCounts()
   response_time = perf_counter() - time_before
   print(f"Total Time in response: {response_time}")
   stat_collection.replace_one({"name": "todo"}, result, upsert=True)
