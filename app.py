@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from pymongo import MongoClient
 from pymongo import ReturnDocument
 
-from movie_stats import MovieStats
+from models.MovieStats import MovieStats
 from models.TodoList import TodoList
 from models.ExpenseList import ExpenseList
 
