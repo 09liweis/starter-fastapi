@@ -1,0 +1,15 @@
+modules = ["python-3.10:v18-20230807-322e88b"]
+
+hidden = [".pythonlibs"]
+run = "bin/dev"
+
+[nix]
+channel = "stable-23_05"
+
+[deployment]
+run = ["sh", "-c", "bin/dev"]
+deploymentTarget = "cloudrun"
+
+[[ports]]
+localPort = 8181
+externalPort = 80

@@ -9,20 +9,18 @@ class ExpenseList:
     for expense in expenses:
       date = expense["date"]
       price = expense["price"]
-      category = expense["category"]
-      yearMonthDate = date[:7]
 
       if (yearDate := date[:4]) not in result_details:
         result_details[yearDate] = {"total": price}
       else:
         result_details[yearDate]["total"] += price
 
-      if category in result_details[yearDate]:
+      if (category := expense["category"]) in result_details[yearDate]:
         result_details[yearDate][category] += price
       else:
         result_details[yearDate][category] = price
 
-      if yearMonthDate not in result_details:
+      if (yearMonthDate := date[:7]) not in result_details:
         result_details[yearMonthDate] = {"total": price}
       else:
         result_details[yearMonthDate]["total"] += price
