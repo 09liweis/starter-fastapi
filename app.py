@@ -29,6 +29,9 @@ class Todo(BaseModel):
 async def root():
   time_before = perf_counter()
   todos_collection = database.todos
+  todo_list_collection = database.todolists
+  todo_lists = todo_list_collection.find()
+
   todos = todos_collection.find()
   todoList = TodoList(todos)
   result = todoList.getTodoCounts()
