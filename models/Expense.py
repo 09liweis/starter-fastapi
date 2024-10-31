@@ -10,3 +10,9 @@ class Expense:
 
   def getMonth(self):
     return self.date[:7]
+
+  def getPrice(self):
+    return self.price
+
+  def getCategory(self):
+    return self.category
