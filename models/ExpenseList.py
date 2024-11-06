@@ -1,3 +1,6 @@
+from models.Expense import Expense
+
+
 class ExpenseList:
 
   def __init__(self, expenses):
@@ -7,23 +10,28 @@ class ExpenseList:
     expenses = self.expenses
     result_details = {}
     for expense in expenses:
-      date = expense["date"]
-      price = expense["price"]
+      ex = Expense(expense)
+      yearDate = ex.getYear()
+      yearMonthDate = ex.getMonth()
+      
+      price = ex.getPrice()
+
+      category = ex.getCategory()
 
       # year expense
-      if (yearDate := date[:4]) not in result_details:
+      if yearDate not in result_details:
         result_details[yearDate] = {"total": price}
       else:
         result_details[yearDate]["total"] += price
 
       #year category expense
-      if (category := expense["category"]) in result_details[yearDate]:
+      if category in result_details[yearDate]:
         result_details[yearDate][category] += price
       else:
         result_details[yearDate][category] = price
 
       #month expense
-      if (yearMonthDate := date[:7]) not in result_details:
+      if yearMonthDate not in result_details:
         result_details[yearMonthDate] = {"total": price}
       else:
         result_details[yearMonthDate]["total"] += price
