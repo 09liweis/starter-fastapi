@@ -10,3 +10,7 @@ class Movie:
     self.genres = movie['genres']
     self.countries = movie['countries']
     self.languages = movie['languages']
+    self.visual_type = movie['visual_type']
+
+  def isMovie(self):
+    return self.visual_type == 'movie'
