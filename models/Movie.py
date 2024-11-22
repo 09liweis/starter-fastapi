@@ -14,3 +14,6 @@ class Movie:
 
   def isMovie(self):
     return self.visual_type == 'movie'
+
+  def getYear(self):
+    return self.year
