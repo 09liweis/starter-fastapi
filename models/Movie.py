@@ -1,4 +1,5 @@
 class Movie:
+
   def __init__(self, movie):
     self.douban_id = movie['douban_id']
     self.title = movie['title']
@@ -17,3 +18,6 @@ class Movie:
 
   def getYear(self):
     return self.year
+
+  def isDone(self):
+    return self.current_episode == self.episodes
