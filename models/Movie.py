@@ -21,3 +21,6 @@ class Movie:
 
   def isDone(self):
     return self.current_episode == self.episodes
+
+  def hasIMDB(self):
+    return self.imdb_id != ''
