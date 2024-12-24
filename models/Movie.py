@@ -13,14 +13,14 @@ class Movie:
     self.languages = movie['languages']
     self.visual_type = movie['visual_type']
 
-  def isMovie(self):
+  def is_movie(self):
     return self.visual_type == 'movie'
 
-  def getYear(self):
+  def get_year(self):
     return self.year
 
-  def isDone(self):
+  def is_done(self):
     return self.current_episode == self.episodes
 
-  def hasIMDB(self):
+  def has_imdb(self):
     return self.imdb_id != ''
