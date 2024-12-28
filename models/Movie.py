@@ -19,6 +19,9 @@ class Movie:
   def get_year(self):
     return self.year
 
+  def not_started(self):
+    return self.current_episode == '0'
+
   def is_done(self):
     return self.current_episode == self.episodes
 
