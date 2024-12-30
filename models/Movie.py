@@ -27,3 +27,6 @@ class Movie:
 
   def has_imdb(self):
     return self.imdb_id != ''
+
+  def get_languages(self):
+    return self.languages
