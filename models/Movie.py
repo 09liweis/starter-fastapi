@@ -30,3 +30,6 @@ class Movie:
 
   def get_languages(self):
     return self.languages
+
+  def get_genres(self):
+    return self.genres
