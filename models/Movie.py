@@ -33,3 +33,6 @@ class Movie:
 
   def get_genres(self):
     return self.genres
+
+  def get_countris(self):
+    return self.countries
