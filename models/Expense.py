@@ -16,3 +16,6 @@ class Expense:
 
   def getCategory(self):
     return self.category
+
+  def is_income(self):
+    return self.price > 0
