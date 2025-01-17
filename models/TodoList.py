@@ -7,21 +7,11 @@ class TodoList:
     self.todos = [Todo(todo) for todo in todos]
 
   def getTodoCounts(self):
-    todos = self.todos
-    total_count = 0
-    pending_count = 0
-    done_count = 0
-    for todo in todos:
-      total_count += 1
-      if todo.is_pending():
-        pending_count += 1
-      if todo.is_done():
-        done_count += 1
     return {
         "name": "todo",
         "details": {
-            "total": total_count,
-            "pending": pending_count,
-            "done": done_count,
+            "total": len(self.todos),
+            "pending": len([todo for todo in self.todos if todo.is_pending()]),
+            "done": len([todo for todo in self.todos if todo.is_done()])
         }
     }
