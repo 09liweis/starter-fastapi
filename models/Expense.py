@@ -5,16 +5,16 @@ class Expense:
     self.date = expense['date']
     self.category = expense['category']
 
-  def getYear(self):
+  def get_year(self):
     return self.date[:4]
 
-  def getMonth(self):
+  def get_month(self):
     return self.date[:7]
 
-  def getPrice(self):
+  def get_price(self):
     return self.price
 
-  def getCategory(self):
+  def get_category(self):
     return self.category
 
   def is_income(self):
