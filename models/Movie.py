@@ -4,12 +4,12 @@ class Movie:
     self.douban_id = movie['douban_id']
     self.title = movie['title']
     self.year = movie.get('year', None)
-    self.current_episode = movie.get('current_episode',0)
+    self.current_episode = movie.get('current_episode', None)
     self.episodes = movie['episodes']
     self.imdb_id = movie['imdb_id']
     self.genres = movie.get('genres', [])
-    self.countries = movie.get('countries',[])
-    self.languages = movie.get('languages',[])
+    self.countries = movie.get('countries', [])
+    self.languages = movie.get('languages', [])
     self.visual_type = movie['visual_type']
 
   def is_movie(self):
@@ -19,7 +19,7 @@ class Movie:
     return self.year
 
   def not_started(self):
-    return self.current_episode == '0'
+    return self.current_episode == '0' or self.current_episode is None
 
   def is_done(self):
     return self.current_episode == self.episodes
