@@ -3,13 +3,13 @@ class Movie:
   def __init__(self, movie):
     self.douban_id = movie['douban_id']
     self.title = movie['title']
-    self.year = movie['year']
-    self.current_episode = movie['current_episode']
+    self.year = movie.get('year', None)
+    self.current_episode = movie.get('current_episode',0)
     self.episodes = movie['episodes']
     self.imdb_id = movie['imdb_id']
-    self.genres = movie['genres']
-    self.countries = movie['countries']
-    self.languages = movie['languages']
+    self.genres = movie.get('genres', [])
+    self.countries = movie.get('countries',[])
+    self.languages = movie.get('languages',[])
     self.visual_type = movie['visual_type']
 
   def is_movie(self):

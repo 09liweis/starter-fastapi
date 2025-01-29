@@ -52,7 +52,7 @@ async def root():
 
 @app.get("/movies")
 async def movies_count():
-  movies_collection = database.visuals
+  movies_collection = database.movies
   movies = list(movies_collection.find())
   movie_stats = MovieStats(movies)
   movie_result = movie_stats.get_stats()

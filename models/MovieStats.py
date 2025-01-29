@@ -1,7 +1,10 @@
+from models.Movie import Movie
+
+
 class MovieStats:
 
   def __init__(self, movies):
-    self.movies = movies
+    self.movies = [Movie(movie) for movie in movies]
 
   def count_movie_field(self, movie, field, count_dict):
     if field in movie:
@@ -24,33 +27,29 @@ class MovieStats:
     languages_count = {}
     years_count = {}
     for movie in self.movies:
-      self.count_movie_field(movie, "genres", genres_count)
+      # self.count_movie_field(movie, "genres", genres_count)
 
-      self.count_movie_field(movie, "countries", countries_count)
+      # self.count_movie_field(movie, "countries", countries_count)
 
-      self.count_movie_field(movie, "languages", languages_count)
+      # self.count_movie_field(movie, "languages", languages_count)
 
-      if "year" in movie:
-        year = movie['year']
+      if year := movie.get_year():
         if year in years_count:
           years_count[year] += 1
         else:
           years_count[year] = 1
 
-      if movie['visual_type'] == 'movie':
+      if movie.is_movie():
         movie_count += 1
       else:
         tv_count += 1
 
-      if 'current_episode' in movie:
-        if movie['current_episode'] == movie['episodes']:
-          done_count += 1
-        if movie['current_episode'] == 0:
-          not_started_count += 1
-      else:
+      if movie.is_done():
+        done_count += 1
+      if movie.not_started():
         not_started_count += 1
 
-      if 'imdb_id' in movie and movie['imdb_id'] != '':
+      if movie.has_imdb():
         has_imdb_count += 1
 
       total += 1
