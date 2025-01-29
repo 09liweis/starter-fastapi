@@ -4,16 +4,15 @@ from models.Expense import Expense
 class ExpenseList:
 
   def __init__(self, expenses):
-    self.expenses = expenses
+    self.expenses = [Expense(expense) for expense in expenses]
 
   def getExpenseCounts(self):
     result_details = {}
     for expense in self.expenses:
-      ex = Expense(expense)
-      yearDate = ex.get_year()
-      yearMonthDate = ex.get_month()
-      price = ex.get_price()
-      category = ex.get_category()
+      yearDate = expense.get_year()
+      yearMonthDate = expense.get_month()
+      price = expense.get_price()
+      category = expense.get_category()
       self._add_expense_to_details(result_details, yearDate, price, category)
       self._add_expense_to_details(result_details, yearMonthDate, price,
                                    category)
