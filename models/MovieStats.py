@@ -6,7 +6,7 @@ class MovieStats:
   def __init__(self, movies):
     self.movies = [Movie(movie) for movie in movies]
 
-  def count_movie_field(self, field_datas, field, count_dict):
+  def count_movie_field(self, field_datas, count_dict):
     if len(field_datas) > 0:
       for v in field_datas:
         if v in count_dict:
@@ -26,13 +26,11 @@ class MovieStats:
     languages_count = {}
     years_count = {}
     for movie in self.movies:
-      self.count_movie_field(movie.get_genres(), "genres", genres_count)
+      self.count_movie_field(movie.get_genres(), genres_count)
 
-      self.count_movie_field(movie.get_countris(), "countries",
-                             countries_count)
+      self.count_movie_field(movie.get_countris(), countries_count)
 
-      self.count_movie_field(movie.get_languages(), "languages",
-                             languages_count)
+      self.count_movie_field(movie.get_languages(), languages_count)
 
       if year := movie.get_year():
         if year in years_count:
