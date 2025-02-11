@@ -21,6 +21,9 @@ class Movie:
   def not_started(self):
     return self.current_episode == 0 or self.current_episode is None
 
+  def in_progress(self):
+    return self.current_episode is not None and self.episodes is not None and self.current_episode > 0 and self.current_episode < self.episodes
+
   def is_done(self):
     return self.current_episode == self.episodes
 

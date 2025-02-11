@@ -20,6 +20,7 @@ class MovieStats:
     tv_count = 0
     done_count = 0
     not_started_count = 0
+    in_progress_count = 0
     has_imdb_count = 0
     genres_count = {}
     countries_count = {}
@@ -47,6 +48,8 @@ class MovieStats:
         done_count += 1
       if movie.not_started():
         not_started_count += 1
+      if movie.in_progress():
+        in_progress_count += 1
 
       if movie.has_imdb():
         has_imdb_count += 1
@@ -60,6 +63,7 @@ class MovieStats:
             "tv": tv_count,
             "done": done_count,
             "not_started": not_started_count,
+            "in_progress": in_progress_count,
             "has_imdb": has_imdb_count,
             "genres": genres_count,
             "countries": countries_count,
